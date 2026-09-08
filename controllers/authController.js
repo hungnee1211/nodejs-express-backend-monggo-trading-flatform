@@ -3,10 +3,7 @@ import jwt from "jsonwebtoken";
 import { OAuth2Client } from "google-auth-library";
 import User from "../models/users.js";
 
-
-
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-
 const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID);
 
 // Hàm tạo JWT token
@@ -19,7 +16,7 @@ const generateToken = (user) => {
     secret,
     { expiresIn }
   );
-}
+};
 
 // Hàm set cookie chứa token
 const setTokenCookie = (res, token) => {
@@ -77,7 +74,6 @@ export const register = async (req, res) => {
     return res.status(201).json({
       success: true,
       message: "Đăng ký thành công",
-      token,
       user: {
         id: newUser._id,
         name: newUser.name,
@@ -140,7 +136,6 @@ export const login = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Đăng nhập thành công",
-      token,
       user: {
         id: user._id,
         name: user.name,
@@ -212,7 +207,6 @@ export const googleLogin = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Đăng nhập bằng Google thành công",
-      token,
       user: {
         id: user._id,
         name: user.name,
@@ -225,6 +219,39 @@ export const googleLogin = async (req, res) => {
     return res.status(401).json({
       success: false,
       message: "Xác thực Google thất bại",
+    });
+  }
+};
+
+/**
+ * @desc   Lấy thông tin user hiện tại từ cookie
+ * @route  GET /api/auth/me
+ */
+export const getMe = async (req, res) => {
+  try {
+    const user = req.user; // Được gắn bởi auth middleware
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Chưa đăng nhập",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        avatar: user.avatar,
+      },
+    });
+  } catch (error) {
+    console.error("GetMe error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Lỗi máy chủ, vui lòng thử lại sau",
     });
   }
 };
