@@ -3,9 +3,14 @@ dotenv.config();
 
 import express from "express";
 import connectDB from "./db/db.js";
-import authRoutes from "./routes/authRoutes.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+
+
+import authRoutes from "./routes/authRoutes.js";
+import walletRoutes from "./routes/walletRoutes.js";
+
+
 
 const app = express();
 
@@ -23,6 +28,7 @@ app.use(cookieParser());
 
 // Mount router
 app.use("/api/auth", authRoutes);
+app.use('/api/wallet', walletRoutes);
 
 
 
