@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 
-import * as walletController from '../controllers/walletController.js';
+import { getBalance,deposit, withdraw, transfer, getTransactionHistory, getTransactionDetail, resetTestnetWallet } from '../controllers/walletController.js';
 import auth from '../middleware/walletMiddleware.js';
 
 
@@ -9,20 +9,20 @@ import auth from '../middleware/walletMiddleware.js';
 router.use(auth);
 
 // Số dư
-router.get('/balance', walletController.getBalance);
+router.get('/balance', getBalance);
 
 // Nạp / rút (testnet - mô phỏng, không phải giao dịch thật)
-router.post('/deposit', walletController.deposit);
-router.post('/withdraw', walletController.withdraw);
+router.post('/deposit', deposit);
+router.post('/withdraw', withdraw);
 
 // Chuyển tiền giữa SPOT và FUNDING
-router.post('/transfer', walletController.transfer);
+router.post('/transfer', transfer);
 
 // Lịch sử giao dịch
-router.get('/transactions', walletController.getTransactionHistory);
-router.get('/transactions/:id', walletController.getTransactionDetail);
+router.get('/transactions', getTransactionHistory);
+router.get('/transactions/:id', getTransactionDetail);
 
 // Tiện ích riêng cho môi trường test
-router.post('/reset', walletController.resetTestnetWallet);
+router.post('/reset', resetTestnetWallet);
 
 export default router;

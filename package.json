@@ -5,7 +5,9 @@
   },
   "type": "module",
   "dependencies": {
+    "@binance/connector": "^3.6.1",
     "bcryptjs": "^3.0.3",
+    "binance-api-node": "^0.13.10",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
